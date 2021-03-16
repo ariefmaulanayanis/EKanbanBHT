@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EKanbanBHT.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +11,22 @@ namespace EKanbanBHT
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            //MainPage = new MainPage();
+            Locator.Initialize();
+
+            InitializeRepository();
+            InitializeMainPage();
+        }
+
+        private void InitializeMainPage()
+        {
+            MainPage = new NavigationPage(Locator.Resolve<HomeView>());
+        }
+
+        private static void InitializeRepository()
+        {
+            //INoteRepository repository = Locator.Resolve<INoteRepository>();
+            //repository.Initialize();
         }
 
         protected override void OnStart()

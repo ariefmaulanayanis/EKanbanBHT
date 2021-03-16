@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EKanbanBHT.Android", "EKanbanBHT\EKanbanBHT.Android\EKanbanBHT.Android.csproj", "{ED5802FA-7C74-4FC8-AF42-336FDB832C4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EKanbanBHT", "EKanbanBHT\EKanbanBHT\EKanbanBHT.csproj", "{4DC76D96-F508-40B5-9F94-3784774364E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EKanbanBHT", "EKanbanBHT\EKanbanBHT\EKanbanBHT.csproj", "{4DC76D96-F508-40B5-9F94-3784774364E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
