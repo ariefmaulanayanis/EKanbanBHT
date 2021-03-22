@@ -1,12 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EKanbanBHT.Views.HomeView">
+             x:Class="EKanbanBHT.Views.HomeView"
+             Title="E-Kanban BHT">
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
             <Label Text="Please enter your employee no : " />
             <Entry Placeholder="Employee No" Text="{Binding EmpNo}" />
-            <Button Text="Sign In" Command="{Binding SignInCommand}" />
+            <!--<Entry Placeholder="Employee No" x:Name="EmpNo" />-->
+            <Button Text="Sign In" 
+                    Command="{Binding SignInCommand}"
+                    BackgroundColor="SkyBlue" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

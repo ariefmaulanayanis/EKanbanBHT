@@ -1,14 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EKanbanBHT.Views.PickingView">
+             x:Class="EKanbanBHT.Views.PickingView"
+             Title="Picking / Shopping">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-            <Label Text="Emp No : " />
-            <Label Text="{Binding EmpNo}" />
-            <Label Text="Scan Trolley QR Code:" />
+        <StackLayout Padding="20">
+            <ContentView HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                <Label Text="Please Scan Trolley Label" FontSize="Large" FontFamily="Ariel" FontAttributes="Bold"  />
+            </ContentView>
             <Entry Placeholder="Scan Result" Text="{Binding ScanText}" />
-            <Button Text="Scan Trolley" Command="{Binding ScanCommand}" />
+            <ContentView VerticalOptions="EndAndExpand">
+                <Button Text="Scan Trolley" 
+                        Command="{Binding ScanCommand}"
+                        VerticalOptions="End"
+                        HeightRequest="100"
+                        BackgroundColor="LimeGreen"/>
+            </ContentView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

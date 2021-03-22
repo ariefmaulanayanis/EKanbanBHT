@@ -20,8 +20,8 @@ namespace EKanbanBHT
             services.AddTransient<MenuViewModel>();
             services.AddTransient<PickingViewModel>();
             services.AddTransient<UploadViewModel>();
-            services.AddTransient<SyncViewModel>();
-            services.AddTransient<DeleteViewModel>();
+            //services.AddTransient<SyncViewModel>();
+            //services.AddTransient<DeleteViewModel>();
             services.AddTransient<SettingViewModel>();
             services.AddTransient<PartViewModel>();
             //add view view
@@ -29,8 +29,8 @@ namespace EKanbanBHT
             services.AddTransient<MenuView>();
             services.AddTransient<PickingView>();
             services.AddTransient<UploadView>();
-            services.AddTransient<SyncView>();
-            services.AddTransient<DeleteView>();
+            //services.AddTransient<SyncView>();
+            //services.AddTransient<DeleteView>();
             services.AddTransient<SettingView>();
             services.AddTransient<PartView>();
 

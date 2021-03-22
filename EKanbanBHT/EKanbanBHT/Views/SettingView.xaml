@@ -1,12 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EKanbanBHT.Views.SettingView">
+             x:Class="EKanbanBHT.Views.SettingView"
+             Title="Setting">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" x:Name="SaveButton" Clicked="SaveButton_Clicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Setting View"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="20">
+            <Label Text="Device ID" />
+            <Entry x:Name="DeviceIdText" Text="{Binding DeviceId}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

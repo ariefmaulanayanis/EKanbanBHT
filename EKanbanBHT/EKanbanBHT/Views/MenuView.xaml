@@ -1,18 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EKanbanBHT.Views.MenuView">
+             x:Class="EKanbanBHT.Views.MenuView"
+             Title="Menu">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackCommand}"></BackButtonBehavior>
     </Shell.BackButtonBehavior>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="{Binding EmpNo}"/>
-            <Button Text="Part Picking" Command="{Binding PickingCommand}" />
-            <Button Text="Upload Data (.dat)" Command="{Binding UploadCommand}" />
-            <Button Text="Sync Data (Request)" Command="{Binding SyncCommand}" />
-            <Button Text="Delete Old Data (> 1 month)" Command="{Binding DeleteCommand}" />
-            <Button Text="Setting" Command="{Binding SettingCommand}" IsVisible="{Binding ShowSetting}" />
+        <StackLayout Padding="20">
+            <Button Text="Picking / Shopping" 
+                    Command="{Binding PickingCommand}" 
+                    HeightRequest="80"
+                    BackgroundColor="LimeGreen"/>
+            <Button Text="Upload Data (.dat)" 
+                    Command="{Binding UploadCommand}" 
+                    HeightRequest="80"
+                    BackgroundColor="Orange"/>
+            <Button Text="Sync Data (Request)" 
+                    x:Name="SyncButton"
+                    Clicked="SyncButton_Clicked"
+                    HeightRequest="80"
+                    BackgroundColor="Orange" />
+            <Button Text="Delete Old Data (> 1 month)" 
+                    x:Name="DeleteButton"
+                    Clicked="DeleteButton_Clicked"
+                    HeightRequest="80"
+                    BackgroundColor="PaleVioletRed" />
+            <Button Text="Setting" 
+                    Command="{Binding SettingCommand}" 
+                    IsVisible="{Binding ShowSetting}" 
+                    HeightRequest="80"
+                    BackgroundColor="SkyBlue" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

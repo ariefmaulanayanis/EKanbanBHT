@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace EKanbanBHT.ViewModels
@@ -33,13 +34,14 @@ namespace EKanbanBHT.ViewModels
 
         public ICommand PickingCommand { get; set; }
         public ICommand UploadCommand { get; set; }
-        public ICommand SyncCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
+        //public ICommand SyncCommand { get; set; }
+        //public ICommand DeleteCommand { get; set; }
         public ICommand SettingCommand { get; set; }
         public ICommand BackCommand { get; set; }
 
         public MenuViewModel()
         {
+            EmpNo = Preferences.Get("user", "");
             ShowSetting = EmpNo == "999";
             PickingCommand = new Command(() =>
             {
@@ -49,14 +51,14 @@ namespace EKanbanBHT.ViewModels
             {
                 NavigateToUploadView();
             });
-            SyncCommand = new Command(() =>
-            {
-                NavigateToSyncView();
-            });
-            DeleteCommand = new Command(() =>
-            {
-                NavigateToDeleteView();
-            });
+            //SyncCommand = new Command(() =>
+            //{
+            //    NavigateToSyncView();
+            //});
+            //DeleteCommand = new Command(() =>
+            //{
+            //    NavigateToDeleteView();
+            //});
             SettingCommand = new Command(() =>
             {
                 NavigateToSettingView();
@@ -72,7 +74,7 @@ namespace EKanbanBHT.ViewModels
         {
             var view = Locator.Resolve<PickingView>();
             var viewModel = view.BindingContext as PickingViewModel;
-            viewModel.EmpNo = this.EmpNo;
+            //viewModel.EmpNo = this.EmpNo;
 
             await Navigation.PushAsync(view);
         }
@@ -81,34 +83,34 @@ namespace EKanbanBHT.ViewModels
         {
             var view = Locator.Resolve<UploadView>();
             var viewModel = view.BindingContext as UploadViewModel;
-            viewModel.EmpNo = this.EmpNo;
+            //viewModel.EmpNo = this.EmpNo;
 
             await Navigation.PushAsync(view);
         }
 
-        private async void NavigateToSyncView()
-        {
-            var view = Locator.Resolve<SyncView>();
-            var viewModel = view.BindingContext as SyncViewModel;
-            viewModel.EmpNo = this.EmpNo;
+        //private async void NavigateToSyncView()
+        //{
+        //    var view = Locator.Resolve<SyncView>();
+        //    var viewModel = view.BindingContext as SyncViewModel;
+        //    //viewModel.EmpNo = this.EmpNo;
 
-            await Navigation.PushAsync(view);
-        }
+        //    await Navigation.PushAsync(view);
+        //}
 
-        private async void NavigateToDeleteView()
-        {
-            var view = Locator.Resolve<DeleteView>();
-            var viewModel = view.BindingContext as DeleteViewModel;
-            viewModel.EmpNo = this.EmpNo;
+        //private async void NavigateToDeleteView()
+        //{
+        //    var view = Locator.Resolve<DeleteView>();
+        //    var viewModel = view.BindingContext as DeleteViewModel;
+        //    //viewModel.EmpNo = this.EmpNo;
 
-            await Navigation.PushAsync(view);
-        }
+        //    await Navigation.PushAsync(view);
+        //}
 
         private async void NavigateToSettingView()
         {
             var view = Locator.Resolve<SettingView>();
             var viewModel = view.BindingContext as SettingViewModel;
-            viewModel.EmpNo = this.EmpNo;
+            //viewModel.EmpNo = this.EmpNo;
 
             await Navigation.PushAsync(view);
         }
@@ -117,7 +119,7 @@ namespace EKanbanBHT.ViewModels
         {
             var view = Locator.Resolve<HomeView>();
             var viewModel = view.BindingContext as HomeViewModel;
-            viewModel.EmpNo = "";
+            //viewModel.EmpNo = "";
 
             await Navigation.PushAsync(view);
         }

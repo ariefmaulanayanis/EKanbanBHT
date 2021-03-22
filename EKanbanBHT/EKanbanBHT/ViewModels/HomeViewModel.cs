@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace EKanbanBHT.ViewModels
@@ -27,13 +28,16 @@ namespace EKanbanBHT.ViewModels
             {
                 NavigateToMenuView();
             });
+            EmpNo = "";
+            Preferences.Set("user", EmpNo);
         }
 
         private async void NavigateToMenuView()
         {
+            Preferences.Set("user", EmpNo);
             var menuView = Locator.Resolve<MenuView>();
-            var menuViewModel=menuView.BindingContext as MenuViewModel;
-            menuViewModel.EmpNo = this.EmpNo;
+            //var menuViewModel=menuView.BindingContext as MenuViewModel;
+            //menuViewModel.EmpNo = EmpNo;
 
             await Navigation.PushAsync(menuView);
         }

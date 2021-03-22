@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
+using Xamarin.Essentials;
 
 namespace EKanbanBHT.ViewModels
 {
     public class SettingViewModel:ViewModelBase
     {
-        private string empNo;
-        public string EmpNo
+        private string deviceId;
+        public string DeviceId
         {
-            get => empNo;
+            get => deviceId;
             set
             {
-                empNo = value;
+                deviceId = value;
                 OnPropertyChanged();
             }
+        }
+
+        public SettingViewModel()
+        {
+            DeviceId = Preferences.Get("device", "");
         }
     }
 }
