@@ -15,6 +15,7 @@ namespace EKanbanBHT.Data
         public DbContext()
         {
             conn = new SQLiteConnection(dbPath);
+            //conn.DropTable<KanbanItem>();
             conn.CreateTable<KanbanItem>();
         }
 

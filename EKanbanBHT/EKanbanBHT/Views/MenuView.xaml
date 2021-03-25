@@ -2,13 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EKanbanBHT.Views.MenuView"
-             Title="Menu">
+             Title="Menu" IsEnabled="{Binding IsEnabled}">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackCommand}"></BackButtonBehavior>
     </Shell.BackButtonBehavior>
     <ContentPage.Content>
         <StackLayout Padding="20">
-            <Button Text="Picking / Shopping" 
+            <Button Text="Picking / Shopping"
                     Command="{Binding PickingCommand}" 
                     HeightRequest="80"
                     BackgroundColor="LimeGreen"/>
@@ -26,11 +26,22 @@
                     Clicked="DeleteButton_Clicked"
                     HeightRequest="80"
                     BackgroundColor="PaleVioletRed" />
+            <Button Text="Delete All" 
+                    x:Name="DeleteAllButton"
+                    Clicked="DeleteAllButton_Clicked"
+                    IsVisible="{Binding IsAdmin}" 
+                    HeightRequest="80"
+                    BackgroundColor="PaleVioletRed" />
             <Button Text="Setting" 
                     Command="{Binding SettingCommand}" 
-                    IsVisible="{Binding ShowSetting}" 
+                    IsVisible="{Binding IsAdmin}" 
                     HeightRequest="80"
                     BackgroundColor="SkyBlue" />
+            <ActivityIndicator x:Name="ActivityIndicator" 
+                           IsRunning="{Binding IsBusy}" 
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           Color="Blue"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

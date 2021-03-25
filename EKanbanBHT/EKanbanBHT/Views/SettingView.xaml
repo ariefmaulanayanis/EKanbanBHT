@@ -10,6 +10,8 @@
         <StackLayout Padding="20">
             <Label Text="Device ID" />
             <Entry x:Name="DeviceIdText" Text="{Binding DeviceId}" />
+            <Label Text="API Address" />
+            <Entry x:Name="APIAddressText" Text="{Binding APIAddress}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

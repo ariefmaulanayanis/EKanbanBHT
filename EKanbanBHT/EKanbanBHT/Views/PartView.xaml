@@ -1,13 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EKanbanBHT.Views.PartView">
+             x:Class="EKanbanBHT.Views.PartView"
+             Title="Scan Material">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" x:Name="SaveButton" Clicked="SaveButton_Clicked" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-            <Label Text="Emp No : " />
-            <Label Text="{Binding EmpNo}" />
-            <Label Text="Scan Trolley QR Code:" />
-            <Label Text="{Binding ScanText}" />
-        </StackLayout>
+        <Grid Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Text="Request No:"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding KanbanHeader.RequestNo}"/>
+            <Label Grid.Row="0" Grid.Column="2" Text="Date:"/>
+            <Label Grid.Row="0" Grid.Column="3" WidthRequest="200" Text="{Binding KanbanHeader.RequestDate, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Line No:"/>
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding KanbanHeader.LineNo}"/>
+            <Label Grid.Row="1" Grid.Column="2" Text="Name:"/>
+            <Label Grid.Row="1" Grid.Column="3" Text="{Binding KanbanHeader.LineName}"/>
+            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="Please Scan Material" FontAttributes="Bold"  />
+            <Entry Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" 
+                   x:Name="QRMaterialText" ReturnType="Go"
+                   IsVisible="{Binding IsAdmin}"/>
+            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Text="Submit" 
+                    x:Name="SubmitButton"
+                    Clicked="SubmitButton_Clicked"
+                    IsVisible="{Binding IsAdmin}" 
+                    BackgroundColor="SkyBlue" />
+            
+            <StackLayout Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
+                <Label Text="No" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="Part No" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="Lot Size" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="Zone" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="Order" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="Scan" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="Balance" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+            <ListView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding KanbanItems}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding RowNumber}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                                <Label Text="{Binding PartNo}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                                <Label Text="{Binding LotSize}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                                <Label Text="{Binding Zone}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                                <Label Text="{Binding OrderQty}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                                <Label Text="{Binding ScanQty}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                                <Label Text="{Binding Balance}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

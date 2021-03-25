@@ -4,22 +4,52 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace EKanbanBHT.Models
 {
     public class KanbanManager
     {
-        static readonly string BaseAddress = "https://192.168.100.18:45455";
-        static readonly string Url = $"{BaseAddress}/api/kanban/";
+        //static readonly string BaseAddress = "https://192.168.100.18:45455";
+        //static readonly string Url = $"{BaseAddress}/api/kanban/";
+        static string BaseAddress;
+        static string Url;
         private string authorizationKey;
+
+        public string StatusMessage { get; set; }
+        public bool IsError { get; set; }
+
+        public KanbanManager()
+        {
+            BaseAddress = Preferences.Get("api", "");
+            Url = BaseAddress + "/api/kanban/";
+        }
 
         private async Task<HttpClient> GetClient()
         {
             HttpClient client = new HttpClient(new HttpClientHandler());
             if (string.IsNullOrEmpty(authorizationKey))
             {
-                authorizationKey = await client.GetStringAsync(Url + "login");
-                authorizationKey = JsonConvert.DeserializeObject<string>(authorizationKey);
+                try
+                {
+                    authorizationKey = await client.GetStringAsync(Url + "login");
+                    authorizationKey = JsonConvert.DeserializeObject<string>(authorizationKey);
+                }
+                catch(HttpRequestException e)
+                {
+                    StatusMessage = string.Format("HttpRequest Exception\n" + e.Message);
+                    IsError = true;
+                }
+                catch(TaskCanceledException e)
+                {
+                    StatusMessage = string.Format("Timeout Exception\n"+e.Message);
+                    IsError = true;
+                }
+                catch (Exception e)
+                {
+                    IsError = true;
+                    StatusMessage = e.Message;
+                }
             }
 
             client.DefaultRequestHeaders.Add("Authorization", authorizationKey);
@@ -29,8 +59,29 @@ namespace EKanbanBHT.Models
 
         public async Task<List<KanbanItem>> GetAll()
         {
-            HttpClient client = await GetClient();
-            string result = await client.GetStringAsync(Url);
+            IsError = false;
+            StatusMessage = "";
+            string result = ""; ;
+            try
+            {
+                HttpClient client = await GetClient();
+                if(!IsError) result = await client.GetStringAsync(Url);
+            }
+            catch (HttpRequestException e)
+            {
+                StatusMessage = string.Format("HttpRequest Exception\n" + e.Message);
+                IsError = true;
+            }
+            catch (TaskCanceledException e)
+            {
+                StatusMessage = string.Format("Timeout Exception\n" + e.Message);
+                IsError = true;
+            }
+            catch (Exception e)
+            {
+                IsError = true;
+                StatusMessage = e.Message;
+            }
             return JsonConvert.DeserializeObject<List<KanbanItem>>(result);
         }
     }

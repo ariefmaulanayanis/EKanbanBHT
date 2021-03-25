@@ -23,14 +23,17 @@ namespace EKanbanBHT.Views
 
         private async void SaveButton_Clicked(object sender, EventArgs e)
         {
-            if (DeviceIdText.Text == "")
+            if (DeviceIdText.Text == "" || APIAddressText.Text=="")
             {
-                await DisplayAlert("Warning", "Device Id field is required.", "OK");
+                //await DisplayAlert("Warning", "Device Id field is required.", "OK");
+                await DisplayAlert("Warning", "All setting fields are required.", "OK");
             }
             else
             {
                 Preferences.Set("device", DeviceIdText.Text);
-                await DisplayAlert("Save Success", "Device Id has been saved.", "OK");
+                Preferences.Set("api", APIAddressText.Text);
+                //await DisplayAlert("Save Success", "Device Id has been saved.", "OK");
+                await DisplayAlert("Save Success", "All setting fields have been saved.", "OK");
             }
         }
     }

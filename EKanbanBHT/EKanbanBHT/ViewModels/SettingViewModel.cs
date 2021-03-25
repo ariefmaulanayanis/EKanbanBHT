@@ -19,9 +19,21 @@ namespace EKanbanBHT.ViewModels
             }
         }
 
+        private string apiAddress;
+        public string APIAddress
+        {
+            get => apiAddress;
+            set
+            {
+                apiAddress = value;
+                OnPropertyChanged();
+            }
+        }
+
         public SettingViewModel()
         {
             DeviceId = Preferences.Get("device", "");
+            APIAddress = Preferences.Get("api", "");
         }
     }
 }

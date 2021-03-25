@@ -6,9 +6,15 @@
     <ContentPage.Content>
         <StackLayout Padding="20">
             <ContentView HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
-                <Label Text="Please Scan Trolley Label" FontSize="Large" FontFamily="Ariel" FontAttributes="Bold"  />
+                <Label Text="Please Scan Trolley Label" FontSize="Large" FontFamily="Arial" FontAttributes="Bold"  />
             </ContentView>
-            <Entry Placeholder="Scan Result" Text="{Binding ScanText}" />
+            <Entry Placeholder="Scan Result" x:Name="QRCodeText" IsVisible="{Binding IsAdmin}"
+                   ReturnType="Go" Completed="QRCodeText_Completed" />
+            <Button Text="Submit" 
+                    x:Name="SubmitButton"
+                    Clicked="SubmitButton_Clicked"
+                    IsVisible="{Binding IsAdmin}" 
+                    BackgroundColor="SkyBlue" />
             <ContentView VerticalOptions="EndAndExpand">
                 <Button Text="Scan Trolley" 
                         Command="{Binding ScanCommand}"

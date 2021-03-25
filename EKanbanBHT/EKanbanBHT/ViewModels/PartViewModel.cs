@@ -1,36 +1,55 @@
-﻿using System;
+﻿using EKanbanBHT.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace EKanbanBHT.ViewModels
 {
     public class PartViewModel : ViewModelBase
     {
-        private string empNo;
-        public string EmpNo
+        public static KanbanItemRepository kanbanItemRepo { get; private set; }
+        private KanbanHeader kanbanHeader;
+        public KanbanHeader KanbanHeader
         {
-            get => empNo;
+            get => kanbanHeader;
             set
             {
-                empNo = value;
+                kanbanHeader = value;
                 OnPropertyChanged();
             }
         }
 
-        private string scanText;
-        public string ScanText
+        private bool isAdmin;
+        public bool IsAdmin
         {
-            get => scanText;
+            get => isAdmin;
             set
             {
-                scanText = value;
+                isAdmin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<KanbanItem> kanbanItems;
+        public List<KanbanItem> KanbanItems
+        {
+            get => kanbanItems;
+            set
+            {
+                kanbanItems = value;
                 OnPropertyChanged();
             }
         }
 
         public PartViewModel()
         {
+            string empNo = Preferences.Get("user", "");
+            IsAdmin = empNo == "999";
+            KanbanHeader = new KanbanHeader();
+            KanbanItems = new List<KanbanItem>();
+            kanbanItemRepo = new KanbanItemRepository();
         }
     }
 }

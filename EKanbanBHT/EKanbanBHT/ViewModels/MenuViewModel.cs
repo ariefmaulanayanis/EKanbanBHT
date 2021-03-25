@@ -21,13 +21,36 @@ namespace EKanbanBHT.ViewModels
             }
         }
 
-        private bool showSetting;
-        public bool ShowSetting
+        private bool isAdmin;
+        public bool IsAdmin
         {
-            get => showSetting;
+            get => isAdmin;
             set
             {
-                showSetting = value;
+                isAdmin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get => isBusy;
+            set
+            {
+                isBusy = value;
+                IsEnabled = !isBusy;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool isEnabled;
+        public bool IsEnabled
+        {
+            get => isEnabled;
+            set
+            {
+                isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -42,7 +65,7 @@ namespace EKanbanBHT.ViewModels
         public MenuViewModel()
         {
             EmpNo = Preferences.Get("user", "");
-            ShowSetting = EmpNo == "999";
+            IsAdmin = EmpNo == "999";
             PickingCommand = new Command(() =>
             {
                 NavigateToPickingView();
