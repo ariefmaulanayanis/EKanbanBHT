@@ -1,6 +1,7 @@
 ﻿using EKanbanBHT.Views;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -104,6 +105,9 @@ namespace EKanbanBHT.ViewModels
 
         private async void NavigateToUploadView()
         {
+            string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "file.txt");
+            File.WriteAllText(file, "ini adalah content.");
+
             var view = Locator.Resolve<UploadView>();
             var viewModel = view.BindingContext as UploadViewModel;
             //viewModel.EmpNo = this.EmpNo;

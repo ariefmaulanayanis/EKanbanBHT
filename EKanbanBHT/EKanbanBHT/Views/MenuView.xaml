@@ -13,7 +13,7 @@
                     HeightRequest="80"
                     BackgroundColor="LimeGreen"/>
             <Button Text="Upload Data (.dat)" 
-                    Command="{Binding UploadCommand}" 
+                    x:Name="UploadButton" Clicked="UploadButton_Clicked"
                     HeightRequest="80"
                     BackgroundColor="Orange"/>
             <Button Text="Sync Data (Request)" 

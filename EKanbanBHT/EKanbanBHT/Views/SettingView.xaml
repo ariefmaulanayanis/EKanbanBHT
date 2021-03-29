@@ -9,9 +9,17 @@
     <ContentPage.Content>
         <StackLayout Padding="20">
             <Label Text="Device ID" />
-            <Entry x:Name="DeviceIdText" Text="{Binding DeviceId}" />
-            <Label Text="API Address" />
-            <Entry x:Name="APIAddressText" Text="{Binding APIAddress}" />
+            <Entry x:Name="DeviceIdText" Text="{Binding DeviceId}" ReturnType="Next" />
+            <Label Text="API Host" />
+            <Entry x:Name="APIAddressText" Text="{Binding APIAddress}" Keyboard="Url" ReturnType="Next" />
+            <Label Text="FTP Host" />
+            <Entry x:Name="FTPHost" Text="{Binding FTPHost}" Keyboard="Url" ReturnType="Next" />
+            <Label Text="FTP User" />
+            <Entry x:Name="FTPUser" Text="{Binding FTPUser}" ReturnType="Next" />
+            <Label Text="FTP Password" />
+            <Entry x:Name="FTPPassword" Text="{Binding FTPPassword}" IsPassword="True" ReturnType="Next" />
+            <Label Text="FTP Port" />
+            <Entry x:Name="FTPPort" Text="{Binding FTPPort}" Keyboard="Numeric" ReturnType="Done" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

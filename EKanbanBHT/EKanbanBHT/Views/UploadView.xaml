@@ -5,7 +5,7 @@
              Title="Upload Data">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Upload View"
+            <Label Text="{Binding Content}"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
         </StackLayout>

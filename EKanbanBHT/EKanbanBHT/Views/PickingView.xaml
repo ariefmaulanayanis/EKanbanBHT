@@ -8,20 +8,24 @@
             <ContentView HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
                 <Label Text="Please Scan Trolley Label" FontSize="Large" FontFamily="Arial" FontAttributes="Bold"  />
             </ContentView>
-            <Entry Placeholder="Scan Result" x:Name="QRCodeText" IsVisible="{Binding IsAdmin}"
-                   ReturnType="Go" Completed="QRCodeText_Completed" />
+            <Label Text="Scan Result:"/>
+            <Entry Placeholder="Place cursor here before scanning" x:Name="QRCodeText" IsVisible="{Binding IsAdmin}"
+                   ReturnType="Go" Completed="QRCodeText_Completed" TextChanged="QRCodeText_TextChanged" />
+            <!--
             <Button Text="Submit" 
                     x:Name="SubmitButton"
                     Clicked="SubmitButton_Clicked"
                     IsVisible="{Binding IsAdmin}" 
-                    BackgroundColor="SkyBlue" />
+                    BackgroundColor="SkyBlue" />            
             <ContentView VerticalOptions="EndAndExpand">
                 <Button Text="Scan Trolley" 
-                        Command="{Binding ScanCommand}"
+                        x:Name="ScanButton"
+                        Clicked="ScanButton_Clicked"
                         VerticalOptions="End"
                         HeightRequest="100"
                         BackgroundColor="LimeGreen"/>
             </ContentView>
+            -->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

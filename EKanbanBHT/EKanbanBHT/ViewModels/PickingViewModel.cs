@@ -99,7 +99,7 @@ namespace EKanbanBHT.ViewModels
         //    }
         //}
 
-        public ICommand ScanCommand { get; set; }
+        //public ICommand ScanCommand { get; set; }
         //public ICommand SubmitCommand { get; set; }
 
         public PickingViewModel()
@@ -107,26 +107,26 @@ namespace EKanbanBHT.ViewModels
             string empNo = Preferences.Get("user", "");
             IsAdmin = empNo == "999";
             KanbanHeader = new KanbanHeader();
-            ScanCommand = new Command(() =>
-            {
-                NavigateToPartView();
-            });
+            //ScanCommand = new Command(() =>
+            //{
+            //    NavigateToPartView();
+            //});
             //SubmitCommand = new Command(() =>
             //{
             //    SubmitTrolley();
             //});
         }
 
-        private async void NavigateToPartView()
-        {
-            var view = Locator.Resolve<PartView>();
-            var viewModel = view.BindingContext as PartViewModel;
-            viewModel.KanbanHeader = KanbanHeader;
-            //viewModel.EmpNo = this.EmpNo;
-            //viewModel.ScanText = this.ScanText;
+        //private async void NavigateToPartView()
+        //{
+        //    var view = Locator.Resolve<PartView>();
+        //    var viewModel = view.BindingContext as PartViewModel;
+        //    viewModel.KanbanHeader = KanbanHeader;
+        //    //viewModel.EmpNo = this.EmpNo;
+        //    //viewModel.ScanText = this.ScanText;
 
-            await Navigation.PushAsync(view);
-        }
+        //    await Navigation.PushAsync(view);
+        //}
 
         //private void SubmitTrolley()
         //{
