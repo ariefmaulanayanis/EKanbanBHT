@@ -8,40 +8,51 @@
     </Shell.BackButtonBehavior>
     <ContentPage.Content>
         <StackLayout Padding="20">
-            <Button Text="Picking / Shopping"
-                    Command="{Binding PickingCommand}" 
-                    HeightRequest="80"
-                    BackgroundColor="LimeGreen"/>
-            <Button Text="Upload Data (.dat)" 
-                    x:Name="UploadButton" Clicked="UploadButton_Clicked"
-                    HeightRequest="80"
-                    BackgroundColor="Orange"/>
-            <Button Text="Sync Data (Request)" 
-                    x:Name="SyncButton"
-                    Clicked="SyncButton_Clicked"
-                    HeightRequest="80"
-                    BackgroundColor="Orange" />
-            <Button Text="Delete Old Data (> 1 month)" 
-                    x:Name="DeleteButton"
-                    Clicked="DeleteButton_Clicked"
-                    HeightRequest="80"
-                    BackgroundColor="PaleVioletRed" />
-            <Button Text="Delete All" 
-                    x:Name="DeleteAllButton"
-                    Clicked="DeleteAllButton_Clicked"
-                    IsVisible="{Binding IsAdmin}" 
-                    HeightRequest="80"
-                    BackgroundColor="PaleVioletRed" />
-            <Button Text="Setting" 
-                    Command="{Binding SettingCommand}" 
-                    IsVisible="{Binding IsAdmin}" 
-                    HeightRequest="80"
-                    BackgroundColor="SkyBlue" />
             <ActivityIndicator x:Name="ActivityIndicator" 
                            IsRunning="{Binding IsBusy}" 
                            VerticalOptions="Center" 
                            HorizontalOptions="Center"
                            Color="Blue"/>
+            <Button Text="Picking / Shopping"
+                    Command="{Binding PickingCommand}" 
+                    HeightRequest="60"
+                    BackgroundColor="LimeGreen"/>
+            <!--
+            <Button Text="Upload Data (.dat)" 
+                    x:Name="UploadButton" Clicked="UploadButton_Clicked"
+                    HeightRequest="80"
+                    BackgroundColor="Orange"/>
+            -->
+            <Button Text="Sync Data (To Device)" 
+                    x:Name="SyncButton"
+                    Clicked="SyncButton_Clicked"
+                    HeightRequest="60"
+                    BackgroundColor="Orange" />
+            <Button Text="Upload Data (.dat)" 
+                    Command="{Binding UploadCommand}"
+                    HeightRequest="60"
+                    BackgroundColor="Orange"/>
+            <Button Text="Kanban Return" 
+                    x:Name="ReturnButton"
+                    Clicked="ReturnButton_Clicked"
+                    HeightRequest="60"
+                    BackgroundColor="Orange" />
+            <Button Text="Delete Old Data (> 1 month)" 
+                    x:Name="DeleteButton"
+                    Clicked="DeleteButton_Clicked"
+                    HeightRequest="60"
+                    BackgroundColor="PaleVioletRed" />
+            <Button Text="Delete All" 
+                    x:Name="DeleteAllButton"
+                    Clicked="DeleteAllButton_Clicked"
+                    IsVisible="{Binding IsAdmin}" 
+                    HeightRequest="60"
+                    BackgroundColor="PaleVioletRed" />
+            <Button Text="Setting" 
+                    Command="{Binding SettingCommand}" 
+                    IsVisible="{Binding IsAdmin}" 
+                    HeightRequest="60"
+                    BackgroundColor="SkyBlue" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

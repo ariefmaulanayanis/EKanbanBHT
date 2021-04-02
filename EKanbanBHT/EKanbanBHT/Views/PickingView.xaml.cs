@@ -2,6 +2,7 @@
 using EKanbanBHT.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,13 @@ namespace EKanbanBHT.Views
             base.OnAppearing();
 
             QRCodeText.Focus();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            var view = Locator.Resolve<MenuView>();
+            Navigation.PushAsync(view);
+            return true;
         }
 
         //private async void SubmitButton_Clicked(object sender, EventArgs e)
@@ -99,13 +107,14 @@ namespace EKanbanBHT.Views
         /// Allows you to pass the scanned data form the ScannerCode.cs to the TextView on this Activity
         /// </summary>
         /// <param name="Result"></param>
-        public void On_Result_Event(string Result)//Changed Scan Result event from static instance
-        {
-            Task.Run(() => {//Changed Invoke UI Thread
-                QRCodeText.Text = Result;
-            });
-        }
+        //public void On_Result_Event(string Result)//Changed Scan Result event from static instance
+        //{
+        //    Task.Run(() => {//Changed Invoke UI Thread
+        //        QRCodeText.Text = Result;
+        //    });
+        //}
 
+        
         private void QRCodeText_TextChanged(object sender, TextChangedEventArgs e)
         {
             string qrCode = e.NewTextValue;
@@ -117,7 +126,10 @@ namespace EKanbanBHT.Views
                     var view = Locator.Resolve<PartView>();
                     var viewModel = view.BindingContext as PartViewModel;
                     viewModel.KanbanHeader = pickingVM.KanbanHeader;
-                    viewModel.KanbanItems = kanbanItems;
+                    viewModel.KanbanHeader.PickStart = DateTime.Now;
+                    //viewModel.KanbanItems = kanbanItems;
+                    viewModel.KanbanItems = new ObservableCollection<KanbanItem>(kanbanItems);
+                    QRCodeText.Text = "";
                     Navigation.PushAsync(view);
                 }
             }
@@ -163,13 +175,29 @@ namespace EKanbanBHT.Views
             kanbanItems = new List<KanbanItem>();
             if (StatusMessage == "")
             {
-                kanbanItems = kanbanItemRepo.GetKanbanItems(pickingVM.KanbanHeader.RequestDate, pickingVM.KanbanHeader.RequestNo);
-                if(kanbanItems.Count==0 || kanbanItems == null)
+                KanbanHeader kanbanHeader= kanbanItemRepo.GetKanbanHeader(pickingVM.KanbanHeader.RequestDate, pickingVM.KanbanHeader.RequestNo);
+                if (kanbanHeader == null)
                 {
                     StatusMessage += "Kanban No " + pickingVM.KanbanHeader.RequestNo.ToString() + " requested on " + pickingVM.KanbanHeader.RequestDate.ToString("dd-MMM-yyyy") + " is not available.\n";
                 }
+                else
+                {
+                    if (kanbanHeader.PickEnd != null)
+                    {
+                        StatusMessage += "Kanban No " + pickingVM.KanbanHeader.RequestNo.ToString() + " requested on " + pickingVM.KanbanHeader.RequestDate.ToString("dd-MMM-yyyy") + " has been saved.\n";
+                    }
+                    else
+                    {
+                        pickingVM.KanbanHeader = kanbanHeader;
+                        kanbanItems = kanbanItemRepo.GetKanbanItems(kanbanHeader.KanbanReqId);
+                    }
+                }
             }
-            if (StatusMessage != "") DisplayAlert("Warning", StatusMessage, "OK");
+            if (StatusMessage != "")
+            {
+                DisplayAlert("Warning", StatusMessage, "OK");
+                QRCodeText.Text = "";
+            }
             else valid = true;
             return valid;
         }

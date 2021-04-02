@@ -57,7 +57,7 @@ namespace EKanbanBHT.Models
             return client;
         }
 
-        public async Task<List<KanbanItem>> GetAll()
+        public async Task<List<KanbanSync>> GetAll()
         {
             IsError = false;
             StatusMessage = "";
@@ -65,7 +65,8 @@ namespace EKanbanBHT.Models
             try
             {
                 HttpClient client = await GetClient();
-                if(!IsError) result = await client.GetStringAsync(Url);
+                //if(!IsError) result = await client.GetStringAsync(Url);
+                result = await client.GetStringAsync(Url);
             }
             catch (HttpRequestException e)
             {
@@ -82,7 +83,39 @@ namespace EKanbanBHT.Models
                 IsError = true;
                 StatusMessage = e.Message;
             }
-            return JsonConvert.DeserializeObject<List<KanbanItem>>(result);
+            return JsonConvert.DeserializeObject<List<KanbanSync>>(result);
+        }
+
+        public async Task Update(KanbanHeader header)
+        {
+            try
+            {
+                HttpClient client = await GetClient();
+                if (!IsError) 
+                    await client.PutAsync(Url + header.KanbanReqId.ToString(),
+                        new StringContent(
+                            JsonConvert.SerializeObject(header),
+                            Encoding.UTF8, "application/json"));
+            }
+            catch (HttpRequestException e)
+            {
+                StatusMessage = string.Format("HttpRequest Exception\n" + e.Message);
+                IsError = true;
+            }
+            catch (TaskCanceledException e)
+            {
+                StatusMessage = string.Format("Timeout Exception\n" + e.Message);
+                IsError = true;
+            }
+            catch (Exception e)
+            {
+                IsError = true;
+                StatusMessage = e.Message;
+            }
+            //await client.PutAsync(Url + "/" + header.KanbanReqId,
+            //    new StringContent(
+            //        JsonConvert.SerializeObject(header),
+            //        Encoding.UTF8, "application/json"));
         }
     }
 }

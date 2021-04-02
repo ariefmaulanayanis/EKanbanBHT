@@ -1,6 +1,7 @@
 ﻿using EKanbanBHT.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -32,8 +33,8 @@ namespace EKanbanBHT.ViewModels
             }
         }
 
-        private List<KanbanItem> kanbanItems;
-        public List<KanbanItem> KanbanItems
+        private ObservableCollection<KanbanItem> kanbanItems;
+        public ObservableCollection<KanbanItem> KanbanItems
         {
             get => kanbanItems;
             set
@@ -43,12 +44,34 @@ namespace EKanbanBHT.ViewModels
             }
         }
 
+        private List<KanbanScan> kanbanScans;
+        public List<KanbanScan> KanbanScans
+        {
+            get => kanbanScans;
+            set
+            {
+                kanbanScans = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string partNo;
+        public string PartNo
+        {
+            get => partNo;
+            set
+            {
+                partNo = value;
+                OnPropertyChanged();
+            }
+        }
+
         public PartViewModel()
         {
             string empNo = Preferences.Get("user", "");
             IsAdmin = empNo == "999";
             KanbanHeader = new KanbanHeader();
-            KanbanItems = new List<KanbanItem>();
+            KanbanItems = new ObservableCollection<KanbanItem>();
             kanbanItemRepo = new KanbanItemRepository();
         }
     }

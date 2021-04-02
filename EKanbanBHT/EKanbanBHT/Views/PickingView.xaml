@@ -3,13 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EKanbanBHT.Views.PickingView"
              Title="Picking / Shopping">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackCommand}"></BackButtonBehavior>
+    </Shell.BackButtonBehavior>
     <ContentPage.Content>
         <StackLayout Padding="20">
             <ContentView HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
                 <Label Text="Please Scan Trolley Label" FontSize="Large" FontFamily="Arial" FontAttributes="Bold"  />
             </ContentView>
             <Label Text="Scan Result:"/>
-            <Entry Placeholder="Place cursor here before scanning" x:Name="QRCodeText" IsVisible="{Binding IsAdmin}"
+            <Entry Placeholder="Place cursor here before scanning" x:Name="QRCodeText"
                    ReturnType="Go" Completed="QRCodeText_Completed" TextChanged="QRCodeText_TextChanged" />
             <!--
             <Button Text="Submit" 

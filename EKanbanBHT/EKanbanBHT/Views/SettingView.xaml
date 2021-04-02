@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout Padding="20">
             <Label Text="Device ID" />
-            <Entry x:Name="DeviceIdText" Text="{Binding DeviceId}" ReturnType="Next" />
+            <Entry x:Name="DeviceIdText" MaxLength="2" Text="{Binding DeviceId}" ReturnType="Next" />
             <Label Text="API Host" />
             <Entry x:Name="APIAddressText" Text="{Binding APIAddress}" Keyboard="Url" ReturnType="Next" />
             <Label Text="FTP Host" />

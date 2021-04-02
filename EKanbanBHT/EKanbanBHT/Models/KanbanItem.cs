@@ -11,8 +11,8 @@ namespace EKanbanBHT.Models
         [PrimaryKey]
         public int ReqItemId { get; set; }
         public int KanbanReqId { get; set; }
-        public DateTime RequestDate { get; set; }
-        public int ReqNo { get; set; }
+        //public DateTime RequestDate { get; set; }
+        //public int ReqNo { get; set; }
         public int PartId { get; set; }
         [MaxLength(15)]
         public string PartNo { get; set; }
@@ -22,7 +22,7 @@ namespace EKanbanBHT.Models
         public int? OrderQty { get; set; }
         public int? ScanQty { get; set; }
         public int? Balance { get; set; }
-        public DateTime? UploadDate { get; set; }
+        //public DateTime? UploadDate { get; set; }
         public short? RowNumber { get; set; }
     }
 }

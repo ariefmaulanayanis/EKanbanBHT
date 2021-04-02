@@ -105,12 +105,11 @@ namespace EKanbanBHT.ViewModels
 
         private async void NavigateToUploadView()
         {
-            string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "file.txt");
-            File.WriteAllText(file, "ini adalah content.");
+            //string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "file.txt");
+            //File.WriteAllText(file, "ini adalah content.");
 
             var view = Locator.Resolve<UploadView>();
             var viewModel = view.BindingContext as UploadViewModel;
-            //viewModel.EmpNo = this.EmpNo;
 
             await Navigation.PushAsync(view);
         }

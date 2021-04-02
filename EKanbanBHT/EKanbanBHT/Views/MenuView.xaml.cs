@@ -80,7 +80,8 @@ namespace EKanbanBHT.Views
             }
             else
             {
-                List<KanbanItem> kanbanList = new List<KanbanItem>();
+                //sync to device
+                List<KanbanSync> kanbanList = new List<KanbanSync>();
                 menuVM.IsBusy = true;
                 try
                 {
@@ -103,7 +104,6 @@ namespace EKanbanBHT.Views
                         await DisplayAlert("Sync Data Success", kanbanItemRepo.StatusMessage, "OK");
                 }
             }
-
         }
 
         private async void DeleteAllButton_Clicked(object sender, EventArgs e)
@@ -128,61 +128,86 @@ namespace EKanbanBHT.Views
             }
         }
 
-        private async void UploadButton_Clicked(object sender, EventArgs e)
+        private async void ReturnButton_Clicked(object sender, EventArgs e)
         {
             if (menuVM.IsBusy) return;
 
-            string FTPHost = Preferences.Get("ftpHost", "");
-            string FTPUser = Preferences.Get("ftpUser", "");
-            string FTPPassword = Preferences.Get("ftpPassword", "");
-            string FTPPort = Preferences.Get("ftpPort", "");
-            if (string.IsNullOrEmpty(FTPHost) || string.IsNullOrEmpty(FTPUser) || 
-                string.IsNullOrEmpty(FTPPassword) || string.IsNullOrEmpty(FTPPort))
+            List<KanbanHeader> headerList = kanbanItemRepo.GetSavedKanbanForReturn();
+            foreach(KanbanHeader header in headerList)
             {
-                menuVM.IsBusy = false;
-                await DisplayAlert("Warning", "FTP setting is not complete, please entry it in setting menu.", "OK");
-            }
-            else
-            {
+                menuVM.IsBusy = true;
                 try
                 {
-                    string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "file.txt");
+                    await manager.Update(header);
+                    kanbanItemRepo.UpdateReturnDate(header.KanbanReqId);
 
-                    //copy file
-                    //string destination = "ftp://files.000webhost.com/tmp/file.txt";
-                    string destination = FTPHost + ":" + FTPPort + "/tmp/file.txt";
-                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(destination);
-                    request.Method = WebRequestMethods.Ftp.UploadFile;
-                    //request.UseBinary = true;
-                    //request.UsePassive = false;//true;
-                    //request.KeepAlive = false;
-                    //request.Timeout = System.Threading.Timeout.Infinite;
-                    //request.AuthenticationLevel = System.Net.Security.AuthenticationLevel.None;
-                    //request.Credentials = new NetworkCredential("alhijrahshop123", "maniez1982");
-                    request.Credentials = new NetworkCredential(FTPUser, FTPPassword);
-
-                    StreamReader sourceStream = new StreamReader(file);
-                    byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
-                    sourceStream.Close();
-                    request.ContentLength = fileContents.Length;
-
-                    Stream requestStream = request.GetRequestStream();
-                    requestStream.Write(fileContents, 0, fileContents.Length);
-                    requestStream.Close();
-                    requestStream.Dispose();
-
-                    //
-                    FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-                    response.Close();
-                    response.Dispose();
                     menuVM.IsBusy = false;
+                    await DisplayAlert("Return Kanban Success", "All saved kanban(s) have been returned.", "OK");
                 }
                 catch (Exception ex)
                 {
                     menuVM.IsBusy = false;
-                    await DisplayAlert("Warning", ex.Message, "OK");
+                    await DisplayAlert("Return Kanban Fail", ex.Message, "OK");
+                    return;
                 }
             }
         }
+
+        //private async void UploadButton_Clicked(object sender, EventArgs e)
+        //{
+        //    if (menuVM.IsBusy) return;
+
+        //    string FTPHost = Preferences.Get("ftpHost", "");
+        //    string FTPUser = Preferences.Get("ftpUser", "");
+        //    string FTPPassword = Preferences.Get("ftpPassword", "");
+        //    string FTPPort = Preferences.Get("ftpPort", "");
+        //    if (string.IsNullOrEmpty(FTPHost) || string.IsNullOrEmpty(FTPUser) || 
+        //        string.IsNullOrEmpty(FTPPassword) || string.IsNullOrEmpty(FTPPort))
+        //    {
+        //        menuVM.IsBusy = false;
+        //        await DisplayAlert("Warning", "FTP setting is not complete, please entry it in setting menu.", "OK");
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "file.txt");
+
+        //            //copy file
+        //            //string destination = "ftp://files.000webhost.com/tmp/file.txt";
+        //            string destination = FTPHost + ":" + FTPPort + "/tmp/file.txt";
+        //            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(destination);
+        //            request.Method = WebRequestMethods.Ftp.UploadFile;
+        //            //request.UseBinary = true;
+        //            //request.UsePassive = false;//true;
+        //            //request.KeepAlive = false;
+        //            //request.Timeout = System.Threading.Timeout.Infinite;
+        //            //request.AuthenticationLevel = System.Net.Security.AuthenticationLevel.None;
+        //            //request.Credentials = new NetworkCredential("alhijrahshop123", "maniez1982");
+        //            request.Credentials = new NetworkCredential(FTPUser, FTPPassword);
+
+        //            StreamReader sourceStream = new StreamReader(file);
+        //            byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
+        //            sourceStream.Close();
+        //            request.ContentLength = fileContents.Length;
+
+        //            Stream requestStream = request.GetRequestStream();
+        //            requestStream.Write(fileContents, 0, fileContents.Length);
+        //            requestStream.Close();
+        //            requestStream.Dispose();
+
+        //            //
+        //            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+        //            response.Close();
+        //            response.Dispose();
+        //            menuVM.IsBusy = false;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            menuVM.IsBusy = false;
+        //            await DisplayAlert("Warning", ex.Message, "OK");
+        //        }
+        //    }
+        //}
     }
 }

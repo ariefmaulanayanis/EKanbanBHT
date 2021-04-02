@@ -4,10 +4,22 @@
              x:Class="EKanbanBHT.Views.UploadView"
              Title="Upload Data">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="{Binding Content}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="20">
+            <ScrollView VerticalOptions="StartAndExpand">
+                <Label Text="{Binding Content}" FontSize="Small"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start" />
+            </ScrollView>
+            <ActivityIndicator x:Name="ActivityIndicator" Color="SteelBlue"
+                           IsRunning="{Binding IsBusy}" 
+                           VerticalOptions="CenterAndExpand" 
+                           HorizontalOptions="Center"/>
+            <Button Text="Start Upload" 
+                        x:Name="UploadButton"
+                        Clicked="UploadButton_Clicked"
+                        VerticalOptions="End"
+                        HeightRequest="60"
+                        BackgroundColor="LimeGreen"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
