@@ -5,15 +5,15 @@
              Title="Upload Data">
     <ContentPage.Content>
         <StackLayout Padding="20">
-            <ScrollView VerticalOptions="StartAndExpand">
+            <ActivityIndicator x:Name="ActivityIndicator" Color="SteelBlue"
+                           IsRunning="{Binding IsBusy}" 
+                           VerticalOptions="Start" 
+                           HorizontalOptions="Center"/>
+            <ScrollView VerticalOptions="CenterAndExpand">
                 <Label Text="{Binding Content}" FontSize="Small"
                 VerticalOptions="Start" 
                 HorizontalOptions="Start" />
             </ScrollView>
-            <ActivityIndicator x:Name="ActivityIndicator" Color="SteelBlue"
-                           IsRunning="{Binding IsBusy}" 
-                           VerticalOptions="CenterAndExpand" 
-                           HorizontalOptions="Center"/>
             <Button Text="Start Upload" 
                         x:Name="UploadButton"
                         Clicked="UploadButton_Clicked"

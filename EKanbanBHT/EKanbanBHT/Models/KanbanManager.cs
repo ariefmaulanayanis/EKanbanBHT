@@ -27,7 +27,10 @@ namespace EKanbanBHT.Models
 
         private async Task<HttpClient> GetClient()
         {
-            HttpClient client = new HttpClient(new HttpClientHandler());
+            //HttpClient client = new HttpClient(new HttpClientHandler());
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true; //add this line to run on android
+            HttpClient client = new HttpClient(handler);
             if (string.IsNullOrEmpty(authorizationKey))
             {
                 try

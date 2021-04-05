@@ -21,7 +21,7 @@ namespace EKanbanBHT.Views
     {
         public static KanbanItemRepository kanbanItemRepo { get; private set; }
         //readonly IList<KanbanItem> kanbanItems = new ObservableCollection<KanbanItem>();
-        readonly KanbanManager manager = new KanbanManager();
+        public static KanbanManager manager { get; private set; }
         private MenuViewModel menuVM { get; set; }
 
         public MenuView(MenuViewModel menuViewModel)
@@ -29,6 +29,7 @@ namespace EKanbanBHT.Views
             InitializeComponent();
 
             kanbanItemRepo = new KanbanItemRepository();
+            manager = new KanbanManager();
             menuViewModel.IsBusy = false;
             menuViewModel.Navigation = Navigation;
             menuVM = menuViewModel;
@@ -39,12 +40,9 @@ namespace EKanbanBHT.Views
         {
             var view = Locator.Resolve<HomeView>();
             var viewModel = view.BindingContext as HomeViewModel;
-            //viewModel.EmpNo = "";
 
             Navigation.PushAsync(view);
             return true;
-            //return base.OnBackButtonPressed();
-            //return new NavigationPage(new HomeView());
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e)
@@ -90,7 +88,7 @@ namespace EKanbanBHT.Views
                 catch (Exception ex)
                 {
                     menuVM.IsBusy = false;
-                    await DisplayAlert("Sync Data Fail", ex.Message, "OK");
+                    await DisplayAlert("Sync Data Fail", ex.Message + "\n" + manager.StatusMessage, "OK");
                     return;
                 }
 
@@ -150,6 +148,24 @@ namespace EKanbanBHT.Views
                     await DisplayAlert("Return Kanban Fail", ex.Message, "OK");
                     return;
                 }
+            }
+        }
+
+        private async void UploadButton_Clicked(object sender, EventArgs e)
+        {
+            if (menuVM.IsBusy) return;
+
+            menuVM.IsBusy = true;
+            UploadViewModel uploadVM = new UploadViewModel();
+            uploadVM.UploadDatFiles();
+            menuVM.IsBusy = false;
+            if (uploadVM.StatusMessage != "")
+            {
+                await DisplayAlert("Warning", uploadVM.StatusMessage, "OK");
+            }
+            else
+            {
+                await DisplayAlert("Upload Success", "All saved kanban(s) have been uploaded.", "OK");
             }
         }
 

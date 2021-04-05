@@ -165,21 +165,6 @@ namespace EKanbanBHT.ViewModels
 
         private void UploadFTP(string filename)
         {
-            //StatusMessage = "";
-            //string FTPHost = Preferences.Get("ftpHost", "");
-            //string FTPUser = Preferences.Get("ftpUser", "");
-            //string FTPPassword = Preferences.Get("ftpPassword", "");
-            //string FTPPort = Preferences.Get("ftpPort", "");
-            //if (string.IsNullOrEmpty(FTPHost) || string.IsNullOrEmpty(FTPUser) ||
-            //    string.IsNullOrEmpty(FTPPassword) || string.IsNullOrEmpty(FTPPort))
-            //{
-            //    //menuVM.IsBusy = false;
-            //    StatusMessage = "FTP setting is not complete, please entry it in setting menu.";
-            //}
-            //else
-            //{
-            //}
-
             try
             {
                 string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), filename);
@@ -211,7 +196,6 @@ namespace EKanbanBHT.ViewModels
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 response.Close();
                 response.Dispose();
-                //menuVM.IsBusy = false;
             }
             catch (Exception ex)
             {

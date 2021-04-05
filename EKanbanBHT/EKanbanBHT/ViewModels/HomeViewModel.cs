@@ -22,9 +22,14 @@ namespace EKanbanBHT.ViewModels
         }
 
         public ICommand SignInCommand { get; set; }
+        public ICommand ReturnCommand { get; set; }
         public HomeViewModel()
         {
             SignInCommand = new Command(() =>
+            {
+                NavigateToMenuView();
+            });
+            ReturnCommand = new Command(() =>
             {
                 NavigateToMenuView();
             });
@@ -36,9 +41,6 @@ namespace EKanbanBHT.ViewModels
         {
             Preferences.Set("user", EmpNo);
             var menuView = Locator.Resolve<MenuView>();
-            //var menuViewModel=menuView.BindingContext as MenuViewModel;
-            //menuViewModel.EmpNo = EmpNo;
-
             await Navigation.PushAsync(menuView);
         }
     }

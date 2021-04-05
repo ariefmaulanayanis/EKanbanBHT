@@ -6,7 +6,8 @@
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
             <Label Text="Please enter your employee no : " />
-            <Entry Placeholder="Employee No" Text="{Binding EmpNo}" Keyboard="Numeric" MaxLength="9" />
+            <Entry Placeholder="Employee No" Text="{Binding EmpNo}" Keyboard="Numeric" MaxLength="9"
+                   ReturnCommand="{Binding ReturnCommand}"/>
             <!--<Entry Placeholder="Employee No" x:Name="EmpNo" />-->
             <Button Text="Sign In" 
                     Command="{Binding SignInCommand}"

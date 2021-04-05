@@ -7,19 +7,24 @@
         <ToolbarItem Text="Save" x:Name="SaveButton" Clicked="SaveButton_Clicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Padding="20">
-            <Label Text="Device ID" />
-            <Entry x:Name="DeviceIdText" MaxLength="2" Text="{Binding DeviceId}" ReturnType="Next" />
-            <Label Text="API Host" />
-            <Entry x:Name="APIAddressText" Text="{Binding APIAddress}" Keyboard="Url" ReturnType="Next" />
-            <Label Text="FTP Host" />
-            <Entry x:Name="FTPHost" Text="{Binding FTPHost}" Keyboard="Url" ReturnType="Next" />
-            <Label Text="FTP User" />
-            <Entry x:Name="FTPUser" Text="{Binding FTPUser}" ReturnType="Next" />
-            <Label Text="FTP Password" />
-            <Entry x:Name="FTPPassword" Text="{Binding FTPPassword}" IsPassword="True" ReturnType="Next" />
-            <Label Text="FTP Port" />
-            <Entry x:Name="FTPPort" Text="{Binding FTPPort}" Keyboard="Numeric" ReturnType="Done" />
+        <StackLayout>
+            <ScrollView Padding="20">
+                <StackLayout>
+                    <Label Text="Device ID" />
+                    <Entry x:Name="DeviceIdText" MaxLength="2" Text="{Binding DeviceId}" ReturnType="Next" />
+                    <Label Text="API Host" />
+                    <Entry x:Name="APIAddressText" Text="{Binding APIAddress}" Keyboard="Url" ReturnType="Next" />
+                    <Label Text="FTP Host" />
+                    <Entry x:Name="FTPHost" Text="{Binding FTPHost}" Keyboard="Url" ReturnType="Next" />
+                    <Label Text="FTP User" />
+                    <Entry x:Name="FTPUser" Text="{Binding FTPUser}" ReturnType="Next" />
+                    <Label Text="FTP Password" />
+                    <Entry x:Name="FTPPassword" Text="{Binding FTPPassword}" IsPassword="True" ReturnType="Next" />
+                    <Label Text="FTP Port" />
+                    <Entry x:Name="FTPPort" Text="{Binding FTPPort}" Keyboard="Numeric" ReturnType="Done"
+                   Completed="FTPPort_Completed"/>
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
