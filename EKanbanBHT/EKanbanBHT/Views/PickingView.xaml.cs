@@ -118,7 +118,6 @@ namespace EKanbanBHT.Views
         private void QRCodeText_TextChanged(object sender, TextChangedEventArgs e)
         {
             string qrCode = e.NewTextValue;
-            //if(qrCode.Length==49) ((IEntryController)sender).SendCompleted();
             if (qrCode.Length == 49)
             {
                 if (ValidateQRCode(qrCode))
@@ -127,8 +126,8 @@ namespace EKanbanBHT.Views
                     var viewModel = view.BindingContext as PartViewModel;
                     viewModel.KanbanHeader = pickingVM.KanbanHeader;
                     viewModel.KanbanHeader.PickStart = DateTime.Now;
-                    //viewModel.KanbanItems = kanbanItems;
                     viewModel.KanbanItems = new ObservableCollection<KanbanItem>(kanbanItems);
+                    viewModel.KanbanScans = kanbanItemRepo.GetKanbanScan(pickingVM.KanbanHeader.KanbanReqId);
                     QRCodeText.Text = "";
                     Navigation.PushAsync(view);
                 }

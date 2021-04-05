@@ -14,7 +14,7 @@ namespace EKanbanBHT.Models
         public int KanbanReqId { get; set; }
         public string PartNo { get; set; }
         public string TagDataCode { get; set; }
-        public int TagSeqNo { get; set; }
+        public int? TagSeqNo { get; set; }
         public double QtyUnit { get; set; }
         public DateTime ScanDateTime { get; set; }
         public string DeviceId { get; set; }

@@ -150,30 +150,6 @@ namespace EKanbanBHT.Models
             }
         }
 
-        //public List<KanbanItem> GetKanbanItems(DateTime requestDate, int reqNo)
-        //{
-        //    short i = 0;
-        //    List<KanbanItem> kanbanItems = new List<KanbanItem>();
-        //    kanbanItems = conn.Table<KanbanItem>().Where(a => a.RequestDate == requestDate && a.ReqNo == reqNo)
-        //        .OrderBy(a => a.ReqItemId).ToList();
-        //    foreach (KanbanItem item in kanbanItems.ToArray())
-        //    {
-        //        try
-        //        {
-        //            item.ScanQty = 0;
-        //            item.Balance = item.OrderQty;
-        //            i++;
-        //            item.RowNumber = i;
-        //            kanbanItems[i - 1] = item;
-        //        }
-        //        catch (Exception e)
-        //        {
-
-        //        }
-        //    }
-        //    return kanbanItems;
-        //}
-
         public KanbanHeader GetKanbanHeader(DateTime requestDate, int reqNo)
         {
             KanbanHeader kanbanHeader = conn.Table<KanbanHeader>().Where(a => a.RequestDate == requestDate && a.RequestNo == reqNo && a.UploadDate == null).FirstOrDefault();
@@ -213,11 +189,11 @@ namespace EKanbanBHT.Models
             return scanList;
         }
 
-        public void KanbanSave(int kanbanReqId,DateTime pickStart)
+        public void KanbanSave(int kanbanReqId,DateTime pickStart,bool isCompleted)
         {
             KanbanHeader header = conn.Table<KanbanHeader>().Where(a => a.KanbanReqId == kanbanReqId).FirstOrDefault();
             header.PickStart = pickStart;
-            header.PickEnd = DateTime.Now;
+            if(isCompleted) header.PickEnd = DateTime.Now;
             header.PickerName = Preferences.Get("user", "");
             conn.Update(header);
         }
@@ -229,12 +205,17 @@ namespace EKanbanBHT.Models
             conn.Update(header);
         }
 
-        public void KanbanScanSave(List<KanbanScan> scanList)
+        //public void KanbanScanSave(List<KanbanScan> scanList)
+        //{
+        //    foreach(KanbanScan kanbanScan in scanList)
+        //    {
+        //        conn.Insert(kanbanScan);
+        //    }
+        //}
+
+        public void KanbanScanSave(KanbanScan kanbanScan)
         {
-            foreach(KanbanScan kanbanScan in scanList)
-            {
-                conn.Insert(kanbanScan);
-            }
+            conn.Insert(kanbanScan);
         }
 
         public List<string> GetScanDate()
@@ -276,38 +257,9 @@ namespace EKanbanBHT.Models
             conn.Update(header);
         }
 
-        //public void Insert(string name)
-        //{
-        //    int result = 0;
-        //    try
-        //    {
-        //        //basic validation to ensure a name was entered
-        //        if (string.IsNullOrEmpty(name))
-        //            throw new Exception("Valid name required");
-
-        //        result = conn.Insert(new Person { Name = name });
-
-        //        StatusMessage = string.Format("{0} record(s) added [Name: {1})", result, name);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        StatusMessage = string.Format("Failed to add {0}. Error: {1}", name, ex.Message);
-        //    }
-        //}
-
-        //public List<Person> GetAllPeople()
-        //{
-        //    try
-        //    {
-        //        return conn.Table<Person>().ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
-        //    }
-
-        //    return new List<Person>();
-        //}
-
+        public void UpdateBalance(KanbanItem item)
+        {
+            conn.Update(item);
+        }
     }
 }

@@ -46,57 +46,23 @@ namespace EKanbanBHT.Views
             return true;
         }
 
-        //private async void SubmitButton_Clicked(object sender, EventArgs e)
-        //{
-        //    if (string.IsNullOrEmpty(QRMaterialText.Text))
-        //        await DisplayAlert("Warning", "You have to fill Scan Material.", "OK");
-        //    else if (QRMaterialText.Text.Length != 223 && QRMaterialText.Text.Length != 115)
-        //        await DisplayAlert("Warning", "Wrong format Scan Result (length is not 223 or 115)", "OK");
-        //    else
-        //    {
-        //        string partNo = "";
-        //        if (QRMaterialText.Text.Length == 223) partNo = QRMaterialText.Text.Substring(96, 15).Trim();
-        //        if (QRMaterialText.Text.Length == 115) partNo = QRMaterialText.Text.Substring(8, 16).Trim();
-        //        List<KanbanItem> items = partVM.KanbanItems.Where(a => a.PartNo == partNo).ToList();
-        //        if (items.Count == 0 || items==null)
-        //        {
-        //            await DisplayAlert("Warning", "There's no part no " + partNo + " in the item list", "OK");
-        //        }
-        //        else
-        //        {
-        //            bool canAdd=false;
-        //            int i = 0;
-        //            foreach (KanbanItem item in items)
-        //            {
-        //                if (item.Balance > 0)
-        //                {
-        //                    item.ScanQty++;
-        //                    item.Balance--;
-        //                    canAdd = true;
-        //                    i++;
-        //                    break;
-        //                }
-        //            }
-        //            if(!canAdd) 
-        //                await DisplayAlert("Warning", "Can't add part " + partNo + ", the required qty has been fulfilled.", "OK");
-
-        //        }
-        //    }
-        //}
-
         private async void SaveButton_Clicked(object sender, EventArgs e)
         {
             List<KanbanItem> parts = partVM.KanbanItems.Where(a => a.Balance > 0).ToList();
+            bool valid = true;
+            bool isCompleted = true;
             if (parts.Count > 0)
             {
-                await DisplayAlert("Warning", "There's still parts not fulfilled.", "OK");
+                //await DisplayAlert("Warning", "There's still parts not fulfilled.", "OK");
+                isCompleted = false;
+                valid = await DisplayAlert("Warning", "Kanban Picking is not completed yet, do you want to save as draft?", "Yes", "No");
             }
-            else
+            if(valid)
             {
                 partVM.KanbanHeader.PickEnd = DateTime.Now;
                 partVM.KanbanHeader.PickerName = Preferences.Get("user", "");
-                kanbanItemRepo.KanbanSave(partVM.KanbanHeader.KanbanReqId, partVM.KanbanHeader.PickStart.Value);
-                kanbanItemRepo.KanbanScanSave(scanList);
+                kanbanItemRepo.KanbanSave(partVM.KanbanHeader.KanbanReqId, partVM.KanbanHeader.PickStart.Value, isCompleted);
+                //kanbanItemRepo.KanbanScanSave(scanList);
                 await DisplayAlert("Save Success", "Kanban Picking has been save.", "OK");
 
                 //redirect to picking view
@@ -125,6 +91,7 @@ namespace EKanbanBHT.Views
                             partVM.KanbanItems[i].ScanQty++;
                             KanbanList.ItemsSource = null;
                             KanbanList.ItemsSource = partVM.KanbanItems;
+                            kanbanItemRepo.UpdateBalance(partVM.KanbanItems[i]); //langsung simpan ke table
 
                             //update kanban scan
                             kanbanScan.ReqItemId = item.ReqItemId;
@@ -132,7 +99,10 @@ namespace EKanbanBHT.Views
                             if (char.IsNumber(kanbanScan.PartNo[0])) kanbanScan.TagSeqNo = i + 1;
                             kanbanScan.DeviceId = Preferences.Get("device", "");
                             kanbanScan.EmpNo = Preferences.Get("user", "");
-                            scanList.Add(kanbanScan);
+                            kanbanItemRepo.KanbanScanSave(kanbanScan);
+                            partVM.KanbanScans = kanbanItemRepo.GetKanbanScan(item.KanbanReqId);
+
+                            //scanList.Add(kanbanScan);
 
                             break;
                         }
@@ -147,12 +117,11 @@ namespace EKanbanBHT.Views
         {
             bool valid = false;
             string StatusMessage = "";
-            //double lotSize = 0;
-            //int? tagSeqNo;
-            //string supplierCode = "";
             partVM.PartNo = "";
             kanbanScan = new KanbanScan();
             kanbanScan.ScanDateTime = DateTime.Now;
+
+            //parsing string dan validasi format
             if (qrCode.Length == 223)
             {
                 kanbanScan.PartNo = qrCode.Substring(96, 15).Trim();
@@ -189,6 +158,7 @@ namespace EKanbanBHT.Views
 
             if (StatusMessage == "")
             {
+                //jika part no tidak terdapat dalam kanban
                 List<KanbanItem> parts = partVM.KanbanItems.Where(a => a.PartNo == kanbanScan.PartNo).ToList();
                 if(parts.Count==0 || parts == null)
                 {
@@ -196,17 +166,30 @@ namespace EKanbanBHT.Views
                 }
                 else 
                 {
+                    //jika lot size berbeda
                     List<KanbanItem> lotSizes = parts.Where(a => a.LotSize == kanbanScan.QtyUnit).ToList();
                     if (lotSizes.Count == 0 || lotSizes == null)
                     {
                         StatusMessage += "Part No " + kanbanScan.PartNo + " with Lot Size " + kanbanScan.QtyUnit.ToString() + " is not valid.\n";
                     }
-                    else
+
+                    //jika part yg discan sudah cukup
+                    if (StatusMessage == "")
                     {
                         List<KanbanItem> partBalance = parts.Where(a => a.Balance > 0).ToList();
                         if (partBalance.Count == 0 || partBalance == null)
                         {
                             StatusMessage += "Part No " + kanbanScan.PartNo + " required qty is already fulfilled.\n";
+                        }
+                    }
+
+                    //jika tag seq no sudah ada
+                    if (StatusMessage == "" && qrCode.Length == 223)
+                    {
+                        List<KanbanScan> scanList = partVM.KanbanScans.Where(a => a.PartNo == kanbanScan.PartNo && a.TagSeqNo == kanbanScan.TagSeqNo).ToList();
+                        if (scanList.Count > 0)
+                        {
+                            StatusMessage += "Part No " + kanbanScan.PartNo + " with Tag Seq No " + kanbanScan.TagSeqNo.ToString() + " has already been scanned.\n";
                         }
                     }
                 }
