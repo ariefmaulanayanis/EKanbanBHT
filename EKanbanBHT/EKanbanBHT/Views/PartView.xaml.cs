@@ -96,7 +96,12 @@ namespace EKanbanBHT.Views
                             //update kanban scan
                             kanbanScan.ReqItemId = item.ReqItemId;
                             kanbanScan.KanbanReqId = item.KanbanReqId;
-                            if (char.IsNumber(kanbanScan.PartNo[0])) kanbanScan.TagSeqNo = i + 1;
+                            if (char.IsNumber(kanbanScan.PartNo[0]))
+                            {
+                                kanbanScan.TagSeqNo = i + 1;
+                                kanbanScan.SupplierCode = "A00";
+                            }
+                            kanbanScan.TagDataCode = char.IsNumber(kanbanScan.PartNo[0]) ? "10" : "11";
                             kanbanScan.DeviceId = Preferences.Get("device", "");
                             kanbanScan.EmpNo = Preferences.Get("user", "");
                             kanbanItemRepo.KanbanScanSave(kanbanScan);

@@ -160,9 +160,10 @@ namespace EKanbanBHT.Models
         {
             short i = 0;
             List<KanbanItem> kanbanItems = new List<KanbanItem>();
+            //kanbanItems = conn.Table<KanbanItem>().Where(a => a.KanbanReqId == kanbanReqId).OrderBy(a=>a.ReqItemId).ToList();
             kanbanItems = conn.Table<KanbanItem>().Where(a => a.KanbanReqId == kanbanReqId)
-                .OrderBy(a=>a.ReqItemId).ToList();
-            foreach(KanbanItem item in kanbanItems.ToArray())
+                .OrderBy(a => a.Zone).ThenBy(a=>a.PartNo).ToList();
+            foreach (KanbanItem item in kanbanItems.ToArray())
             {
                 try
                 {
