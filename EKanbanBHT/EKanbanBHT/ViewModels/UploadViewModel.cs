@@ -112,7 +112,8 @@ namespace EKanbanBHT.ViewModels
                 {
                     content += " "; //Slit Reader Address
                     content += "03"; //Transaction No.
-                    content += char.IsNumber(item.PartNo[0]) ? "10" : "11"; //Tag Data Code
+                    //content += char.IsNumber(item.PartNo[0]) ? "10" : "11"; //Tag Data Code
+                    content += item.TagDataCode; //Tag Data Code                    
                     content += item.PartNo.PadRight(15, ' '); //Part No.
                     content += "".PadLeft(8, ' '); //Production Day
                     content += "".PadLeft(5, ' '); //Process Code
