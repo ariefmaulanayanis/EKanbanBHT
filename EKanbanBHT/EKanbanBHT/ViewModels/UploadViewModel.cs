@@ -107,7 +107,8 @@ namespace EKanbanBHT.ViewModels
 
                 //get content
                 List<KanbanScan> scanList = kanbanItemRepo.GetKanbanScan(header.KanbanReqId);
-                string content = scanList.Count.ToString() + "\n";
+                //string content = scanList.Count.ToString() + "\n";
+                string content = scanList.Count.ToString().PadRight(177, ' ') + "\n";
                 foreach (KanbanScan item in scanList)
                 {
                     content += " "; //Slit Reader Address
@@ -139,7 +140,8 @@ namespace EKanbanBHT.ViewModels
                     content += "".PadLeft(5, ' '); //Processing Status
                     content += (item.SupplierCode == null ? "" : item.SupplierCode).PadRight(5, ' '); //Supplier Code
                     content += "".PadLeft(20, ' '); //Receive Time
-                    content += Preferences.Get("user", "").PadRight(9, ' '); //User BHT/Scanner
+                    //content += Preferences.Get("user", "").PadRight(9, ' '); //User BHT/Scanner
+                    content += Preferences.Get("user", "").PadRight(7, ' '); //User BHT/Scanner
                     content += "\n"; //new line
                 }
 
