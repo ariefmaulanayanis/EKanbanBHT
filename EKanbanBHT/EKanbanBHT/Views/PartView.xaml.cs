@@ -27,6 +27,7 @@ namespace EKanbanBHT.Views
             partVM = viewModel;
             partVM.Navigation = Navigation;
             BindingContext = partVM;
+            ScannedArea.IsVisible = false;
         }
 
         protected override void OnAppearing()
@@ -77,45 +78,54 @@ namespace EKanbanBHT.Views
         private void QRMaterialText_TextChanged(object sender, TextChangedEventArgs e)
         {
             string qrCode = e.NewTextValue;
-            if (qrCode.Length == 115 || qrCode.Length == 223)
+            if (qrCode == "") return;
+            if (ValidateQRCode(qrCode))
             {
-                if (ValidateQRCode(qrCode))
+                int i = 0;
+                bool isFound = false;
+                foreach (KanbanItem item in partVM.KanbanItems.ToArray())
                 {
-                    int i = 0;
-                    foreach(KanbanItem item in partVM.KanbanItems.ToArray())
+                    if (item.PartNo == kanbanScan.PartNo && item.Balance > 0 && isFound==false)
                     {
-                        if(item.PartNo== kanbanScan.PartNo && item.Balance > 0)
+                        //update kanban item
+                        partVM.KanbanItems[i].Balance--;
+                        partVM.KanbanItems[i].ScanQty++;
+                        partVM.KanbanItems[i].BackgroundColor = "Orange";
+                        isFound = true;
+                        KanbanList.ItemsSource = null;
+                        KanbanList.ItemsSource = partVM.KanbanItems;
+                        kanbanItemRepo.UpdateKanbanItem(partVM.KanbanItems[i]); //langsung simpan ke table
+
+                        //update kanban scan
+                        kanbanScan.ReqItemId = item.ReqItemId;
+                        kanbanScan.KanbanReqId = item.KanbanReqId;
+                        if (char.IsNumber(kanbanScan.PartNo[0]))
                         {
-                            //update kanban item
-                            partVM.KanbanItems[i].Balance--;
-                            partVM.KanbanItems[i].ScanQty++;
-                            KanbanList.ItemsSource = null;
-                            KanbanList.ItemsSource = partVM.KanbanItems;
-                            kanbanItemRepo.UpdateBalance(partVM.KanbanItems[i]); //langsung simpan ke table
-
-                            //update kanban scan
-                            kanbanScan.ReqItemId = item.ReqItemId;
-                            kanbanScan.KanbanReqId = item.KanbanReqId;
-                            if (char.IsNumber(kanbanScan.PartNo[0]))
-                            {
-                                kanbanScan.TagSeqNo = i + 1;
-                                kanbanScan.SupplierCode = "A00";
-                            }
-                            kanbanScan.TagDataCode = char.IsNumber(kanbanScan.PartNo[0]) ? "10" : "11";
-                            kanbanScan.DeviceId = Preferences.Get("device", "");
-                            kanbanScan.EmpNo = Preferences.Get("user", "");
-                            kanbanItemRepo.KanbanScanSave(kanbanScan);
-                            partVM.KanbanScans = kanbanItemRepo.GetKanbanScan(item.KanbanReqId);
-
-                            //scanList.Add(kanbanScan);
-
-                            break;
+                            kanbanScan.TagSeqNo = i + 1;
+                            kanbanScan.SupplierCode = "A00";
                         }
-                        i++;
+                        kanbanScan.TagDataCode = char.IsNumber(kanbanScan.PartNo[0]) ? "10" : "11";
+                        kanbanScan.DeviceId = Preferences.Get("device", "");
+                        kanbanScan.EmpNo = Preferences.Get("user", "");
+                        kanbanItemRepo.KanbanScanSave(kanbanScan);
+                        partVM.KanbanScans = kanbanItemRepo.GetKanbanScan(item.KanbanReqId);
+
+                        //scanList.Add(kanbanScan);
+
+                        ScannedArea.IsVisible = true;
+                        partVM.ScannedKanban = partVM.KanbanItems[i];
+
+                        //break;
                     }
+                    else
+                    {
+                        partVM.KanbanItems[i].BackgroundColor = "AntiqueWhite";
+                        kanbanItemRepo.UpdateKanbanItem(partVM.KanbanItems[i]); //langsung simpan ke table
+                    }
+                    i++;
                 }
-                QRMaterialText.Text = "";
             }
+            QRMaterialText.Text = "";
         }
 
         private bool ValidateQRCode(string qrCode)
@@ -126,38 +136,48 @@ namespace EKanbanBHT.Views
             kanbanScan = new KanbanScan();
             kanbanScan.ScanDateTime = DateTime.Now;
 
-            //parsing string dan validasi format
-            if (qrCode.Length == 223)
+            if (qrCode.Length != 115 && qrCode.Length != 223)
             {
-                kanbanScan.PartNo = qrCode.Substring(96, 15).Trim();
-                try
-                {
-                    kanbanScan.QtyUnit = Convert.ToDouble(qrCode.Substring(111, 7));
-                }
-                catch
-                {
-                    StatusMessage += "Lot Size format is wrong.\n";
-                }
-                try
-                {
-                    kanbanScan.TagSeqNo = Convert.ToInt32(qrCode.Substring(154, 7).Trim());
-                }
-                catch
-                {
-                    StatusMessage += "Tag Sequence No format is wrong.\n";
-                }
-                kanbanScan.SupplierCode = qrCode.Substring(143, 3).Trim();
+                //qr code is not valid
+                StatusMessage += "QC Code format is not valid.\n";
             }
-            else //qrCode.Length == 115
+            else
             {
-                kanbanScan.PartNo = qrCode.Substring(8, 16).Trim();
-                try
+                //parsing string dan validasi format
+                kanbanScan.QRLength = qrCode.Length;
+                if (qrCode.Length == 223)
                 {
-                    kanbanScan.QtyUnit = Convert.ToDouble(qrCode.Substring(108, 7));
+                    kanbanScan.PartNo = qrCode.Substring(96, 15).Trim();
+                    try
+                    {
+                        kanbanScan.QtyUnit = Convert.ToDouble(qrCode.Substring(111, 7));
+                    }
+                    catch
+                    {
+                        StatusMessage += "Lot Size format is wrong.\n";
+                    }
+                    try
+                    {
+                        kanbanScan.TagSeqNo = Convert.ToInt32(qrCode.Substring(154, 7).Trim());
+                    }
+                    catch
+                    {
+                        StatusMessage += "Tag Sequence No format is wrong.\n";
+                    }
+                    kanbanScan.SupplierCode = qrCode.Substring(143, 3).Trim();
                 }
-                catch
+                else //qrCode.Length == 115
                 {
-                    StatusMessage += "Lot Size format is wrong.\n";
+                    kanbanScan.PartNo = qrCode.Substring(8, 16).Trim();
+                    try
+                    {
+                        kanbanScan.QtyUnit = Convert.ToDouble(qrCode.Substring(108, 7));
+                    }
+                    catch
+                    {
+                        StatusMessage += "Lot Size format is wrong.\n";
+                    }
+                    kanbanScan.SupplierCode = "A00";
                 }
             }
 
@@ -204,6 +224,7 @@ namespace EKanbanBHT.Views
             {
                 DisplayAlert("Warning", StatusMessage, "OK");
                 QRMaterialText.Text = "";
+                ScannedArea.IsVisible = false;
             }
             else valid = true;
 

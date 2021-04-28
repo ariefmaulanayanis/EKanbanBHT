@@ -66,6 +66,17 @@ namespace EKanbanBHT.ViewModels
             }
         }
 
+        private KanbanItem scannedKanban;
+        public KanbanItem ScannedKanban
+        {
+            get => scannedKanban;
+            set
+            {
+                scannedKanban = value;
+                OnPropertyChanged();
+            }
+        }
+
         public PartViewModel()
         {
             string empNo = Preferences.Get("user", "");

@@ -171,6 +171,7 @@ namespace EKanbanBHT.Models
                     //item.Balance = item.OrderQty;
                     i++;
                     item.RowNumber = i;
+                    item.BackgroundColor = "AntiqueWhite";
                     kanbanItems[i - 1] = item;
                 }
                 catch(Exception e)
@@ -258,7 +259,7 @@ namespace EKanbanBHT.Models
             conn.Update(header);
         }
 
-        public void UpdateBalance(KanbanItem item)
+        public void UpdateKanbanItem(KanbanItem item)
         {
             conn.Update(item);
         }

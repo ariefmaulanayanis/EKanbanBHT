@@ -24,5 +24,6 @@ namespace EKanbanBHT.Models
         public int? Balance { get; set; }
         //public DateTime? UploadDate { get; set; }
         public short? RowNumber { get; set; }
+        public string BackgroundColor { get; set; }
     }
 }
