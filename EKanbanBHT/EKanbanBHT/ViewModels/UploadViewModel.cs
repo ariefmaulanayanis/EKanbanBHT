@@ -109,6 +109,9 @@ namespace EKanbanBHT.ViewModels
                 List<KanbanScan> scanList = kanbanItemRepo.GetKanbanScan(header.KanbanReqId);
                 //string content = scanList.Count.ToString() + "\n";
                 string content = scanList.Count.ToString().PadRight(177, ' ') + "\n";
+
+                //tagseqno
+                int tagSeqNo = 0;
                 foreach (KanbanScan item in scanList)
                 {
                     content += " "; //Slit Reader Address
@@ -118,7 +121,15 @@ namespace EKanbanBHT.ViewModels
                     content += item.PartNo.PadRight(15, ' '); //Part No.
                     content += "".PadLeft(8, ' '); //Production Day
                     content += "".PadLeft(5, ' '); //Process Code
-                    content += item.TagSeqNo.ToString().PadLeft(7, '0'); // Tag Sequence No.
+                    //content += item.TagSeqNo.ToString().PadLeft(7, '0'); // Tag Sequence No.
+                    //if (item.TagDataCode == "11")
+                    if (item.QRLength == 223)
+                        content += item.TagSeqNo.ToString().PadLeft(7, '0'); // Tag Sequence No.
+                    else
+                    {
+                        tagSeqNo++;
+                        content += tagSeqNo.ToString().PadLeft(7, '0'); // Tag Sequence No.
+                    }
                     content += "".PadLeft(9, ' '); //Production Order No.
                     content += item.QtyUnit.ToString().PadLeft(7, '0'); //Qty per Unit of Tag
                     content += "".PadLeft(7, ' '); //Truck No.
@@ -138,7 +149,8 @@ namespace EKanbanBHT.ViewModels
                     content += "".PadLeft(7, ' '); //Receive Batch No.
                     content += "".PadLeft(4, ' '); //Receive Sequence No.
                     content += "".PadLeft(5, ' '); //Processing Status
-                    content += (item.SupplierCode == null ? "" : item.SupplierCode).PadRight(5, ' '); //Supplier Code
+                    //content += (item.SupplierCode == null ? "" : item.SupplierCode).PadRight(5, ' '); //Supplier Code
+                    content += item.SupplierCode.PadRight(5, ' '); //Supplier Code
                     content += "".PadLeft(20, ' '); //Receive Time
                     //content += Preferences.Get("user", "").PadRight(9, ' '); //User BHT/Scanner
                     content += Preferences.Get("user", "").PadRight(7, ' '); //User BHT/Scanner

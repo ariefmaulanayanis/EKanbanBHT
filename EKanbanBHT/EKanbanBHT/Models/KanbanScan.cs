@@ -20,5 +20,6 @@ namespace EKanbanBHT.Models
         public string DeviceId { get; set; }
         public string SupplierCode { get; set; }
         public string EmpNo { get; set; }
+        public int QRLength { get; set; }
     }
 }
