@@ -10,6 +10,12 @@
         <StackLayout VerticalOptions="StartAndExpand">
             <StackLayout>
                 <Grid Padding="20" BackgroundColor="Aquamarine">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -54,28 +60,34 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>
+
+            <StackLayout HeightRequest="1" BackgroundColor="DarkGray">
+            </StackLayout>
+
+            <StackLayout x:Name="ScannedArea" Padding="5">
+                <Label Text="Scanned Part" FontAttributes="Bold"  />
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightBlue" Padding="5">
+                    <Label Text="No" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
+                    <Label Text="Part No" HorizontalOptions="StartAndExpand" WidthRequest="120" FontAttributes="Bold"/>
+                    <Label Text="LotSz" HorizontalOptions="StartAndExpand" WidthRequest="60" FontAttributes="Bold"/>
+                    <Label Text="Zone" HorizontalOptions="StartAndExpand" WidthRequest="60" FontAttributes="Bold"/>
+                    <Label Text="Ord" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
+                    <Label Text="Scn" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
+                    <Label Text="Blc" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" BackgroundColor="Orange">
+                    <Label Text="{Binding ScannedKanban.RowNumber}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" HeightRequest="35" />
+                    <Label Text="{Binding ScannedKanban.PartNo}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="120" HeightRequest="35" />
+                    <Label Text="{Binding ScannedKanban.LotSize}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="60" HeightRequest="35" />
+                    <Label Text="{Binding ScannedKanban.Zone}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="60" HeightRequest="35" />
+                    <Label Text="{Binding ScannedKanban.OrderQty}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" HeightRequest="35" />
+                    <Label Text="{Binding ScannedKanban.ScanQty}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" HeightRequest="35" />
+                    <Label Text="{Binding ScannedKanban.Balance}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" HeightRequest="35" />
+                </StackLayout>
+            </StackLayout>
+
             <StackLayout Padding="20">
-                <StackLayout x:Name="ScannedArea">
-                    <Label Text="Scanned Part" FontAttributes="Bold"  />
-                    <StackLayout Orientation="Horizontal" BackgroundColor="LightBlue" Padding="5">
-                        <Label Text="No" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
-                        <Label Text="Part No" HorizontalOptions="StartAndExpand" WidthRequest="120" FontAttributes="Bold"/>
-                        <Label Text="LotSz" HorizontalOptions="StartAndExpand" WidthRequest="60" FontAttributes="Bold"/>
-                        <Label Text="Zone" HorizontalOptions="StartAndExpand" WidthRequest="60" FontAttributes="Bold"/>
-                        <Label Text="Ord" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
-                        <Label Text="Scn" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
-                        <Label Text="Blc" HorizontalOptions="StartAndExpand" WidthRequest="30" FontAttributes="Bold"/>
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" BackgroundColor="Orange">
-                        <Label Text="{Binding ScannedKanban.RowNumber}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" />
-                        <Label Text="{Binding ScannedKanban.PartNo}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="120" />
-                        <Label Text="{Binding ScannedKanban.LotSize}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="60" />
-                        <Label Text="{Binding ScannedKanban.Zone}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="60" />
-                        <Label Text="{Binding ScannedKanban.OrderQty}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" />
-                        <Label Text="{Binding ScannedKanban.ScanQty}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" />
-                        <Label Text="{Binding ScannedKanban.Balance}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="30" />
-                    </StackLayout>
-                </StackLayout>                <Label Text="Please Scan Material" FontAttributes="Bold"  />
+                <Label Text="Please Scan Material" FontAttributes="Bold"  />
                 <Entry Placeholder="Place cursor here before scanning" x:Name="QRMaterialText" ReturnType="Go"
                    TextChanged="QRMaterialText_TextChanged"/>
             </StackLayout>
