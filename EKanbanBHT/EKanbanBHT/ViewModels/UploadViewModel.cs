@@ -108,7 +108,7 @@ namespace EKanbanBHT.ViewModels
                 //get content
                 List<KanbanScan> scanList = kanbanItemRepo.GetKanbanScan(header.KanbanReqId);
                 //string content = scanList.Count.ToString() + "\n";
-                string content = scanList.Count.ToString().PadRight(177, ' ') + "\n";
+                string content = scanList.Count.ToString().PadRight(177, ' ') + "\r\n";
 
                 //tagseqno
                 int tagSeqNo = 0;
@@ -154,7 +154,7 @@ namespace EKanbanBHT.ViewModels
                     content += "".PadLeft(20, ' '); //Receive Time
                     //content += Preferences.Get("user", "").PadRight(9, ' '); //User BHT/Scanner
                     content += Preferences.Get("user", "").PadRight(7, ' '); //User BHT/Scanner
-                    content += "\n"; //new line
+                    content += "\r\n"; //new line
                 }
 
                 //write text file
