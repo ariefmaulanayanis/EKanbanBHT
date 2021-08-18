@@ -8,6 +8,10 @@
             <Label Text="Please enter your employee no : " />
             <Entry Placeholder="Employee No" Text="{Binding EmpNo}" Keyboard="Numeric" MaxLength="9"
                    ReturnCommand="{Binding ReturnCommand}"/>
+            <Label Text="Employee No is mandatory."
+                   TextColor="Red"
+                   BackgroundColor="LightPink"                   
+                   IsVisible="{Binding ShowValidation}"/>
             <!--<Entry Placeholder="Employee No" x:Name="EmpNo" />-->
             <Button Text="Sign In" 
                     Command="{Binding SignInCommand}"

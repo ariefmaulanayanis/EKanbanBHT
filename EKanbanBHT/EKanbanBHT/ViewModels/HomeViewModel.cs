@@ -21,19 +21,34 @@ namespace EKanbanBHT.ViewModels
             }
         }
 
+        private bool showValidation;
+        public bool ShowValidation
+        {
+            get => showValidation;
+            set
+            {
+                showValidation = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public ICommand SignInCommand { get; set; }
         public ICommand ReturnCommand { get; set; }
         public HomeViewModel()
         {
             SignInCommand = new Command(() =>
             {
-                NavigateToMenuView();
+                if (string.IsNullOrEmpty(EmpNo)) ShowValidation = true;
+                else NavigateToMenuView();
             });
             ReturnCommand = new Command(() =>
             {
-                NavigateToMenuView();
+                if (string.IsNullOrEmpty(EmpNo)) ShowValidation = true;
+                else NavigateToMenuView();
             });
             EmpNo = "";
+            ShowValidation = false;
             Preferences.Set("user", EmpNo);
         }
 
